@@ -94,15 +94,15 @@ Built for Indian logistics & transport use-cases
 
 ## Installation
 
-- 1. Clone the repository
+- Clone the repository
 git clone https://github.com/Kush-012/Transportation-and-Logistics
 
-  cd bharatconnect
+ cd bharatconnect
 
-- 2️. Install dependencies
+- Install dependencies
 npm install
 
-- 3️. Setup Environment Variables
+- Setup Environment Variables
 
 Create a .env file in the root directory:
 ```
@@ -136,7 +136,7 @@ GEMINI_API_KEY=
 ```
 
 
-- 4. Usage
+- Usage
   
 ```
 Start Backend Server
