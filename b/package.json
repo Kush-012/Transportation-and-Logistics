@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@google/genai": "^1.33.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "ioredis": "^5.8.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.11",
+    "nodemon": "^3.1.11",
+    "otp-generator": "^4.0.1",
+    "redis": "^5.10.0"
+  }
+}
