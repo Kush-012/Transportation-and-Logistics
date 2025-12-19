@@ -1,16 +1,16 @@
 const Vehicle = require("../../models/vehicle");
 
-// DELETE /api/vehicles/:vehicleNumber
+
 async function deleteVehicleByNumber(req, res) {
   try {
     const { vehicleNumber } = req.params;
-    const driverEmail = req.email; // coming from auth middleware
+    const driverEmail = req.email; 
 
     if (!vehicleNumber) {
       return res.status(400).json({ message: "Vehicle number is required" });
     }
 
-    // Convert to uppercase because schema stores uppercase
+    
     const normalizedNumber = vehicleNumber.toUpperCase();
 
     const deletedVehicle = await Vehicle.findOneAndDelete({

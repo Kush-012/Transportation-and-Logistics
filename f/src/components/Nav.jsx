@@ -1,8 +1,4 @@
-// 🔥 Global auth event for forcing re-render across app
-export const authUpdateEvent = new Event("authUpdate");
-
-import React, { useState, useEffect } from "react";
-
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Truck,
@@ -15,21 +11,20 @@ import {
   Home,
   Menu,
   X,
-  ClipboardEdit, // for update
-  PlusCircle,     // for add transport
+  ClipboardEdit,
+  PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
-import { jwtDecode } from "jwt-decode";
+import { useAuth } from "./AuthContext";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [userData, setUserData] = useState(null);
-
+  
+  const { userData, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 🔥 Nav items based on role
   const getNavItems = (role) => {
     if (role === "driver") {
       return [
@@ -39,7 +34,7 @@ const Nav = () => {
         { path: "/driverdashboard", name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5 text-white" /> },
       ];
     }
-    // Default → Shipper
+
     return [
       { path: "/", name: "Home", icon: <Home className="w-5 h-5 text-white" /> },
       { path: "/bookvehicle", name: "Book Transport", icon: <Package className="w-5 h-5 text-white" /> },
@@ -47,44 +42,12 @@ const Nav = () => {
       { path: "/shipperdashboard", name: "My Bookings", icon: <MapPin className="w-5 h-5 text-white" /> },
     ];
   };
-useEffect(() => {
-  const loadUser = () => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUserData(decoded);
-      } catch {
-        setUserData(null);
-      }
-    } else {
-      setUserData(null);
-    }
+
+  const handleLogout = () => {
+    logout();
+    setIsUserMenuOpen(false);
+    navigate("/");
   };
-
-  // Run immediately on mount
-  loadUser();
-
-  // Listen for global authentication changes
-  window.addEventListener("authUpdate", loadUser);
-
-  return () => {
-    window.removeEventListener("authUpdate", loadUser);
-  };
-}, []);
-
-
-const handleLogout = () => {
-  sessionStorage.clear();
-  setUserData(null);
-  setIsUserMenuOpen(false);
-
-  // 🔥 Tell navbar to update
-  window.dispatchEvent(new Event("authChanged"));
-
-  navigate("/");
-};
-
 
   const isActive = (path) => location.pathname === path;
 
@@ -93,7 +56,6 @@ const handleLogout = () => {
       <div className="container mx-auto px-8 py-3">
         <div className="flex items-center justify-between">
 
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <div>
               <h1 className="text-2xl font-bold text-white">
@@ -105,7 +67,6 @@ const handleLogout = () => {
             </div>
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-1">
             {getNavItems(userData?.role).map((item) => (
               <Link
@@ -123,10 +84,7 @@ const handleLogout = () => {
             ))}
           </div>
 
-          {/* Right Side */}
           <div className="flex items-center space-x-3">
-
-            {/* User Menu */}
             {userData && (
               <div className="hidden md:block relative">
                 <button
@@ -174,32 +132,25 @@ const handleLogout = () => {
               </div>
             )}
 
-            {/* Login / SignUp */}
             {!userData && (
               <div className="hidden md:flex items-center space-x-3">
-                <Link
-                  to="/signup"
-                  className="px-6 py-2.5 rounded-full border-2 border-blue-400 text-blue-300 font-medium hover:bg-white hover:text-blue-600 transition-colors"
-                >
+                <Link to="/signup" className="px-6 py-2.5 rounded-full border-2 border-blue-400 text-blue-300 font-medium">
                   Sign Up
                 </Link>
-                <Link
-                  to="/login"
-                  className="px-6 py-2.5 rounded-full bg-blue-500 text-white font-medium hover:bg-blue-600 transition-shadow"
-                >
+                <Link to="/login" className="px-6 py-2.5 rounded-full bg-blue-500 text-white font-medium">
                   Login
                 </Link>
               </div>
             )}
 
-            {/* Mobile Toggle */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2.5 rounded-full bg-white/30 backdrop-blur-sm shadow-sm text-white"
+              className="md:hidden p-2.5 rounded-full bg-white/30 text-white"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
+
         </div>
       </div>
     </nav>

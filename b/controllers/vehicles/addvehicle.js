@@ -20,7 +20,7 @@ async function addvehicle(req, res) {
       return res.status(400).json({ message: "All fields are required!" });
     } 
 
-    // 🖼️ Upload images to Cloudinary (Memory Buffer)
+    // Upload images to Cloudinary (Memory Buffer)
     let imageUrls = [];
 
     if (req.files && req.files.length > 0) {

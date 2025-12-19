@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [popup, setPopup] = useState(null);
 
@@ -18,23 +20,20 @@ export default function Login() {
     setTimeout(() => setPopup(null), 2000);
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await axios.post("http://localhost:4500/login", form);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4500/login", form);
 
-    sessionStorage.setItem("token", res.data.token);
+      login(res.data.token);
 
-    // 🔥 Force NavBar to update immediately
-    window.dispatchEvent(new Event("authUpdate"));
+      showPopup("Successfully Logged In", "success");
+      setTimeout(() => navigate("/"), 500);
 
-    showPopup("Successfully Logged In", "success");
-    setTimeout(() => navigate("/"), 500);
-
-  } catch (error) {
-    showPopup("Login Failed", "error");
-  }
-};
+    } catch (error) {
+      showPopup("Login Failed", "error");
+    }
+  };
 
 
 
@@ -43,7 +42,7 @@ export default function Login() {
       {popup && (
         <div
           className={`fixed top-25 right-4 px-4 py-2 rounded-lg shadow-lg text-white font-semibold
-        ${popup.type === "success" ? "bg-green-500" : "bg-red-500"}`}
+        ${popup.type === "success" ? "bg-blue-500" : "bg-red-500"}`}
         >
           {popup.msg}
         </div>
@@ -236,4 +235,4 @@ export default function Login() {
       </div>
     </>
   );
-} 
+}

@@ -6,12 +6,12 @@ async function login(req, res) {
     try {
         const { email, password } = req.body;
 
-        // 🛑 Check required fields
+        //  Check required fields
         if (!email || !password) {
             return res.status(400).send({ message: "Email and Password are required" });
         }
 
-        // 🔐 ADMIN LOGIN (No DB Check)
+        //  ADMIN LOGIN (No DB Check)
         if (email === "admin@gmail.com") {
             let token = setUser({
                 name: "Admin",
@@ -24,7 +24,7 @@ async function login(req, res) {
             });
         }
 
-        // 🔐 TESTER LOGIN (No DB Check)
+        // TESTER LOGIN (No DB Check)
         if (email === "tester@gmail.com") {
             let token = setUser({
                 name: "Tester",
@@ -37,26 +37,26 @@ async function login(req, res) {
             });
         }
 
-        // 2️⃣ Check normal user in DB
+        // Check normal user in DB
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
 
-        // 3️⃣ Check password
+        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).send({ message: "Invalid password" });
         }
 
-        // 4️⃣ Generate JWT
+        // Generate JWT
         const token = setUser({
             name: user.name,
             email: user.email,
             role: user.role
         });
 
-        // 5️⃣ Send response
+        // Send response
         return res.status(200).send({
             message: "Login successful",
             token

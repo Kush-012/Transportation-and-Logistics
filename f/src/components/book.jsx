@@ -342,7 +342,7 @@ export default function Book() {
         <input
           type="text"
           readOnly
-          className="w-full p-2 rounded bg-gray-700 text-white mb-5 font-bold text-green-300"
+          className="w-full p-2 rounded bg-gray-700 text-white mb-5 font-bold text-blue-300"
           value={filter.totalFare ? `₹ ${filter.totalFare}` : ""}
         />
 
@@ -372,8 +372,8 @@ export default function Book() {
         </div>
 
         {tripInfo.distance && (
-          <p className="text-center text-green-300 font-bold mb-6">
-            🛣 {tripInfo.distance} km &nbsp; | &nbsp; ⏱ {tripInfo.time}
+          <p className="text-center text-blue-300 font-bold mb-6">
+            Distance: {tripInfo.distance} km &nbsp; | &nbsp; Time: {tripInfo.time}
           </p>
         )}
 

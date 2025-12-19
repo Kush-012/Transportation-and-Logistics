@@ -2,7 +2,7 @@ const Vehicle = require("../../models/vehicle");
 
 async function viewvehiclebydriverEmail(req, res) {
   try {
-    const { driverEmail } = req.params; // take email from URL params
+    const { driverEmail } = req.params; 
 
     if (!driverEmail) {
       return res.status(400).json({ message: "Driver email is required" });

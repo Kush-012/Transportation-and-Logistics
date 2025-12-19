@@ -7,7 +7,7 @@ export default function Addvehicle() {
     vehicleNumber: "",
     capacityInKg: "",
     pricePerKm: "",
-    location: "", // 👈 NEW
+    location: "", 
   });
 
   const [images, setImages] = useState([]);
@@ -35,7 +35,7 @@ export default function Addvehicle() {
     formData.append("vehicleNumber", form.vehicleNumber);
     formData.append("capacityInKg", form.capacityInKg);
     formData.append("pricePerKm", form.pricePerKm);
-    formData.append("location", form.location); // 👈 NEW
+    formData.append("location", form.location); 
 
     images.forEach((img) => formData.append("images", img));
 
@@ -136,7 +136,7 @@ export default function Addvehicle() {
               className="w-full p-3 bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-blue-500"
             />
 
-            {/* ✨ New Location Input */}
+            {/* Input */}
             <input
               type="text"
               name="location"

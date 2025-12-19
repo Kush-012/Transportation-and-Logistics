@@ -6,7 +6,7 @@ export default function AI() {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🔥 Store full chat history (AI + user)
+  
   const [messages, setMessages] = useState([
     {
       sender: "ai",
@@ -53,7 +53,7 @@ export default function AI() {
 
   return (
     <>
-      {/* Floating glowing orb button */}
+      
       <button
         onClick={() => setOpen(!open)}
         className="
@@ -144,7 +144,7 @@ export default function AI() {
                 "
               />
 
-              {/* Normal SEND Button */}
+              {/* SEND Button */}
               <button
                 onClick={askAI}
                 disabled={loading || !prompt.trim()}

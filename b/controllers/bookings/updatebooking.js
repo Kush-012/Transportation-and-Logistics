@@ -26,7 +26,7 @@ async function updatebooking(req, res) {
       });
     }
 
-    // ========= STATUS VALIDATION RULES =========
+    
 
     // SHIPPER → PAY
     if (status === "Paid") {
@@ -63,7 +63,7 @@ if (status === "Cancelled") {
     return res.status(400).json({ message: "Cannot cancel after trip has started" });
   }
 
-  // JUST DELETE — no other changes
+  
   await Booking.deleteOne({ bookingid });
 
   return res.status(200).json({
@@ -94,7 +94,7 @@ if (status === "Cancelled") {
       booking.completedAt = new Date();
     }
 
-    // ========= APPLY UPDATE =========
+    // APPLY UPDATE
     booking.status = status;
     await booking.save();
 

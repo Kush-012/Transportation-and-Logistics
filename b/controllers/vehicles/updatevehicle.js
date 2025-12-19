@@ -1,20 +1,20 @@
-// controllers/vehicleController.js
+
 const Vehicle = require("../../models/vehicle");
 
-// PUT /api/vehicles/:vehicleNumber
+
 async function updateVehicleByNumber(req, res) {
   try {
     let { vehicleNumber } = req.params;
-    const driverEmail = req.email; // from authMiddleware
+    const driverEmail = req.email; 
 
     if (!vehicleNumber) {
       return res.status(400).json({ message: "Vehicle number is required" });
     }
 
-    // 🔹 Normalize input and trim any whitespace
+  
     const normalizedNumber = vehicleNumber.trim().toUpperCase();
 
-    // 🔹 Build update object only with allowed fields
+    
     const { location, vehicleType, capacityInKg, pricePerKm, isAvailable } = req.body;
 
     const updateData = {};
@@ -24,7 +24,7 @@ async function updateVehicleByNumber(req, res) {
     if (pricePerKm !== undefined) updateData.pricePerKm = pricePerKm;
     if (isAvailable !== undefined) updateData.isAvailable = isAvailable;
 
-    // 🔥 Match by trimmed vehicle number and driver email
+    
     const updatedVehicle = await Vehicle.findOneAndUpdate(
       {
         $expr: {
