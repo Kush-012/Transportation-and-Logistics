@@ -88,7 +88,7 @@ Built for Indian logistics & transport use-cases
 
 ## Folder Structure
 ```
-/bharatconnect
+/Transportation-and-Logistics
 │── /f
 │   ├── /components
 │   ├── /pages
@@ -113,7 +113,7 @@ Built for Indian logistics & transport use-cases
 - Clone the repository
 git clone https://github.com/Kush-012/Transportation-and-Logistics
 
- cd bharatconnect
+ cd Transportation-and-Logistics
 
 - Install dependencies
 npm install
