@@ -1,29 +1,26 @@
 const Vehicle = require("../../models/vehicle");
 
-async function viewvehiclebydriverEmail(req, res) {
-  try {
-    const { driverEmail } = req.params; 
 
-    if (!driverEmail) {
-      return res.status(400).json({ message: "Driver email is required" });
-    }
+const { AppError, asyncHandler } = require("../../middlewares/errorHandler");
 
-    // Fetch vehicles for this driver
-    const vehicles = await Vehicle.find({ driverEmail }).sort({ createdAt: -1 });
+const viewvehiclebydriverEmail = asyncHandler(async (req, res, next) => {
+  const { driverEmail } = req.params;
 
-    if (vehicles.length === 0) {
-      return res.status(404).json({ message: "No vehicles found for this driver" });
-    }
-
-    return res.status(200).json({
-      message: "Vehicles fetched successfully",
-      vehicles,
-    });
-
-  } catch (err) {
-    console.error("View Vehicles Error:", err);
-    return res.status(500).json({ message: "Server Error" });
+  if (!driverEmail) {
+    return next(new AppError("Driver email is required", 400));
   }
-}
+
+  // Fetch vehicles for this driver
+  const vehicles = await Vehicle.find({ driverEmail }).sort({ createdAt: -1 });
+
+  if (vehicles.length === 0) {
+    return next(new AppError("No vehicles found for this driver", 404));
+  }
+
+  return res.status(200).json({
+    message: "Vehicles fetched successfully",
+    vehicles,
+  });
+});
 
 module.exports = { viewvehiclebydriverEmail };
