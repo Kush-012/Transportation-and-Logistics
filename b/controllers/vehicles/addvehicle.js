@@ -1,6 +1,60 @@
 const Vehicle = require("../../models/vehicle");
 const cloudinary = require("../../config/cloudinaryconfig");
-const stream = require("stream"); 
+const stream = require("stream");
+
+/**
+ * Validate price per kilometer
+ * @param {any} pricePerKm - Price per kilometer
+ * @returns {Object} - {valid: boolean, error: string|null, value: number|null}
+ */
+function validatePricePerKm(pricePerKm) {
+  // Check if null or undefined
+  if (pricePerKm === null || pricePerKm === undefined) {
+    return { valid: false, error: "Price per km is required", value: null };
+  }
+
+  // Convert to number if string
+  const numPrice = typeof pricePerKm === 'string' ? parseFloat(pricePerKm) : pricePerKm;
+
+  // Check if valid number
+  if (isNaN(numPrice)) {
+    return { valid: false, error: "Price per km must be a valid number", value: null };
+  }
+
+  // Check if positive
+  if (numPrice <= 0) {
+    return { valid: false, error: "Price per km must be greater than 0", value: null };
+  }
+
+  return { valid: true, error: null, value: numPrice };
+}
+
+/**
+ * Validate vehicle capacity
+ * @param {any} capacity - Capacity in kg
+ * @returns {Object} - {valid: boolean, error: string|null, value: number|null}
+ */
+function validateCapacity(capacity) {
+  // Check if null or undefined
+  if (capacity === null || capacity === undefined) {
+    return { valid: false, error: "Vehicle capacity is required", value: null };
+  }
+
+  // Convert to number if string
+  const numCapacity = typeof capacity === 'string' ? parseFloat(capacity) : capacity;
+
+  // Check if valid number
+  if (isNaN(numCapacity)) {
+    return { valid: false, error: "Vehicle capacity must be a valid number", value: null };
+  }
+
+  // Check if positive
+  if (numCapacity <= 0) {
+    return { valid: false, error: "Vehicle capacity must be greater than 0 kg", value: null };
+  }
+
+  return { valid: true, error: null, value: numCapacity };
+}
 
 async function addvehicle(req, res) {
   try {
@@ -9,16 +63,28 @@ async function addvehicle(req, res) {
       return res.status(403).json({
         message: "Access Denied! Only Drivers can add vehicles.",
       });
-    } 
+    }
 
-    const driverEmail = req.email; 
+    const driverEmail = req.email;
     const driverName = req.name;
-    const { vehicleType, vehicleNumber, capacityInKg, pricePerKm,location } = req.body;
+    const { vehicleType, vehicleNumber, capacityInKg, pricePerKm, location } = req.body;
 
-  
-    if (!vehicleType || !vehicleNumber || !capacityInKg || !pricePerKm || !location) {
-      return res.status(400).json({ message: "All fields are required!" });
-    } 
+    // Validate required fields
+    if (!vehicleType || !vehicleNumber || !location) {
+      return res.status(400).json({ message: "Vehicle type, number, and location are required!" });
+    }
+
+    // Validate capacity
+    const capacityValidation = validateCapacity(capacityInKg);
+    if (!capacityValidation.valid) {
+      return res.status(400).json({ message: capacityValidation.error });
+    }
+
+    // Validate price per km
+    const priceValidation = validatePricePerKm(pricePerKm);
+    if (!priceValidation.valid) {
+      return res.status(400).json({ message: priceValidation.error });
+    }
 
     // Upload images to Cloudinary (Memory Buffer)
     let imageUrls = [];
@@ -43,15 +109,15 @@ async function addvehicle(req, res) {
       }
     }
 
-    // 📝 Save vehicle in DB
+    // 📝 Save vehicle in DB with validated values
     const vehicle = await Vehicle.create({
       driverName,
       driverEmail,
-      location,
+      location: location.trim(),
       vehicleType,
-      vehicleNumber,
-      capacityInKg,
-      pricePerKm,
+      vehicleNumber: vehicleNumber.trim().toUpperCase(),
+      capacityInKg: capacityValidation.value,
+      pricePerKm: priceValidation.value,
       isAvailable: true,
       images: imageUrls,
     });
@@ -62,7 +128,7 @@ async function addvehicle(req, res) {
     });
   } catch (err) {
     console.error("Add Vehicle Error:", err);
-    return res.status(500).json({ message: "Server Error!" });
+    return res.status(500).json({ message: "Server Error!", error: err.message });
   }
 }
 
