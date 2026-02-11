@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { getStoredOTP, deleteOTP } = require("./otpService");
+const { getStoredOTP, deleteOTP } = require("./otpservice");
 
 async function verifyOTP(email, enteredOTP) {
     try {
