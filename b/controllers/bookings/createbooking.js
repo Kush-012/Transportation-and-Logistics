@@ -54,61 +54,58 @@ function validateFare(fare) {
   return { valid: true, error: null, value: numFare };
 }
 
-async function createbooking(req, res) {
-  try {
-    const {
-      shipperEmail,
-      driverEmail,
-      vehicleNo,
-      pickupLocation,
-      dropLocation,
-      distanceInKm,
-      totalFare
-    } = req.body;
 
-    // Validate required fields
-    if (
-      !shipperEmail ||
-      !driverEmail ||
-      !vehicleNo ||
-      !pickupLocation ||
-      !dropLocation
-    ) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+const { AppError, asyncHandler } = require("../../middlewares/errorHandler");
 
-    // Validate distance
-    const distanceValidation = validateDistance(distanceInKm);
-    if (!distanceValidation.valid) {
-      return res.status(400).json({ message: distanceValidation.error });
-    }
+const createbooking = asyncHandler(async (req, res, next) => {
+  const {
+    shipperEmail,
+    driverEmail,
+    vehicleNo,
+    pickupLocation,
+    dropLocation,
+    distanceInKm,
+    totalFare
+  } = req.body;
 
-    // Validate fare
-    const fareValidation = validateFare(totalFare);
-    if (!fareValidation.valid) {
-      return res.status(400).json({ message: fareValidation.error });
-    }
-
-    // Create booking with validated numeric values
-    const booking = await Booking.create({
-      shipperEmail,
-      driverEmail,
-      vehicleNo,
-      pickupLocation,
-      dropLocation,
-      distanceInKm: distanceValidation.value,
-      totalFare: fareValidation.value,
-    });
-
-    // Send success response
-    return res.status(201).json({
-      message: "Booking created successfully",
-    });
-
-  } catch (error) {
-    console.error("Booking creation error:", error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+  // Validate required fields
+  if (
+    !shipperEmail ||
+    !driverEmail ||
+    !vehicleNo ||
+    !pickupLocation ||
+    !dropLocation
+  ) {
+    return next(new AppError("All fields are required", 400));
   }
-}
+
+  // Validate distance
+  const distanceValidation = validateDistance(distanceInKm);
+  if (!distanceValidation.valid) {
+    return next(new AppError(distanceValidation.error, 400));
+  }
+
+  // Validate fare
+  const fareValidation = validateFare(totalFare);
+  if (!fareValidation.valid) {
+    return next(new AppError(fareValidation.error, 400));
+  }
+
+  // Create booking with validated numeric values
+  await Booking.create({
+    shipperEmail,
+    driverEmail,
+    vehicleNo,
+    pickupLocation,
+    dropLocation,
+    distanceInKm: distanceValidation.value,
+    totalFare: fareValidation.value,
+  });
+
+  // Send success response
+  return res.status(201).json({
+    message: "Booking created successfully",
+  });
+});
 
 module.exports = { createbooking };

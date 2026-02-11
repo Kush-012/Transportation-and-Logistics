@@ -56,80 +56,76 @@ function validateCapacity(capacity) {
   return { valid: true, error: null, value: numCapacity };
 }
 
-async function addvehicle(req, res) {
-  try {
-    // 💠 Role check (only Drivers)
-    if (req.role !== "driver") {
-      return res.status(403).json({
-        message: "Access Denied! Only Drivers can add vehicles.",
-      });
-    }
 
-    const driverEmail = req.email;
-    const driverName = req.name;
-    const { vehicleType, vehicleNumber, capacityInKg, pricePerKm, location } = req.body;
+const { AppError, asyncHandler } = require("../../middlewares/errorHandler");
 
-    // Validate required fields
-    if (!vehicleType || !vehicleNumber || !location) {
-      return res.status(400).json({ message: "Vehicle type, number, and location are required!" });
-    }
-
-    // Validate capacity
-    const capacityValidation = validateCapacity(capacityInKg);
-    if (!capacityValidation.valid) {
-      return res.status(400).json({ message: capacityValidation.error });
-    }
-
-    // Validate price per km
-    const priceValidation = validatePricePerKm(pricePerKm);
-    if (!priceValidation.valid) {
-      return res.status(400).json({ message: priceValidation.error });
-    }
-
-    // Upload images to Cloudinary (Memory Buffer)
-    let imageUrls = [];
-
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const bufferStream = new stream.PassThrough();
-        bufferStream.end(file.buffer);
-
-        const uploadedImage = await new Promise((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: "VehicleImages" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          bufferStream.pipe(uploadStream);
-        });
-
-        imageUrls.push(uploadedImage.secure_url);
-      }
-    }
-
-    // 📝 Save vehicle in DB with validated values
-    const vehicle = await Vehicle.create({
-      driverName,
-      driverEmail,
-      location: location.trim(),
-      vehicleType,
-      vehicleNumber: vehicleNumber.trim().toUpperCase(),
-      capacityInKg: capacityValidation.value,
-      pricePerKm: priceValidation.value,
-      isAvailable: true,
-      images: imageUrls,
-    });
-
-    return res.status(201).json({
-      message: "Vehicle added successfully",
-      vehicle,
-    });
-  } catch (err) {
-    console.error("Add Vehicle Error:", err);
-    return res.status(500).json({ message: "Server Error!", error: err.message });
+const addvehicle = asyncHandler(async (req, res, next) => {
+  // 💠 Role check (only Drivers)
+  if (req.role !== "driver") {
+    return next(new AppError("Access Denied! Only Drivers can add vehicles.", 403));
   }
-}
+
+  const driverEmail = req.email;
+  const driverName = req.name;
+  const { vehicleType, vehicleNumber, capacityInKg, pricePerKm, location } = req.body;
+
+  // Validate required fields
+  if (!vehicleType || !vehicleNumber || !location) {
+    return next(new AppError("Vehicle type, number, and location are required!", 400));
+  }
+
+  // Validate capacity
+  const capacityValidation = validateCapacity(capacityInKg);
+  if (!capacityValidation.valid) {
+    return next(new AppError(capacityValidation.error, 400));
+  }
+
+  // Validate price per km
+  const priceValidation = validatePricePerKm(pricePerKm);
+  if (!priceValidation.valid) {
+    return next(new AppError(priceValidation.error, 400));
+  }
+
+  // Upload images to Cloudinary (Memory Buffer)
+  let imageUrls = [];
+
+  if (req.files && req.files.length > 0) {
+    for (const file of req.files) {
+      const bufferStream = new stream.PassThrough();
+      bufferStream.end(file.buffer);
+
+      const uploadedImage = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "VehicleImages" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        bufferStream.pipe(uploadStream);
+      });
+
+      imageUrls.push(uploadedImage.secure_url);
+    }
+  }
+
+  // 📝 Save vehicle in DB with validated values
+  const vehicle = await Vehicle.create({
+    driverName,
+    driverEmail,
+    location: location.trim(),
+    vehicleType,
+    vehicleNumber: vehicleNumber.trim().toUpperCase(),
+    capacityInKg: capacityValidation.value,
+    pricePerKm: priceValidation.value,
+    isAvailable: true,
+    images: imageUrls,
+  });
+
+  return res.status(201).json({
+    message: "Vehicle added successfully",
+    vehicle,
+  });
+});
 
 module.exports = { addvehicle };

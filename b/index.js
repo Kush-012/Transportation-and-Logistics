@@ -67,6 +67,11 @@ app.use("/updatebooking", updatebookingRoute);
 
 
 
+
+// Centralized Error Handler Middleware (should be last)
+const { errorHandler } = require("./middlewares/errorHandler");
+app.use(errorHandler);
+
 app.listen(4500, () => {
   console.log("Server running on port 4500");
 });

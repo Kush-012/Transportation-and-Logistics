@@ -1,40 +1,32 @@
 const Vehicle = require("../../models/vehicle");
 
 
-async function deleteVehicleByNumber(req, res) {
-  try {
-    const { vehicleNumber } = req.params;
-    const driverEmail = req.email; 
 
-    if (!vehicleNumber) {
-      return res.status(400).json({ message: "Vehicle number is required" });
-    }
+const { AppError, asyncHandler } = require("../../middlewares/errorHandler");
 
-    
-    const normalizedNumber = vehicleNumber.toUpperCase();
+const deleteVehicleByNumber = asyncHandler(async (req, res, next) => {
+  const { vehicleNumber } = req.params;
+  const driverEmail = req.email;
 
-    const deletedVehicle = await Vehicle.findOneAndDelete({
-      vehicleNumber: normalizedNumber,
-      driverEmail,
-    });
-
-    if (!deletedVehicle) {
-      return res.status(404).json({
-        message: "Vehicle not found or not owned by this driver",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Vehicle deleted successfully",
-      vehicleNumber: normalizedNumber,
-    });
-  } catch (error) {
-    console.error("Error deleting vehicle:", error);
-    return res.status(500).json({
-      message: "Server error",
-      error: error.message,
-    });
+  if (!vehicleNumber) {
+    return next(new AppError("Vehicle number is required", 400));
   }
-}
+
+  const normalizedNumber = vehicleNumber.toUpperCase();
+
+  const deletedVehicle = await Vehicle.findOneAndDelete({
+    vehicleNumber: normalizedNumber,
+    driverEmail,
+  });
+
+  if (!deletedVehicle) {
+    return next(new AppError("Vehicle not found or not owned by this driver", 404));
+  }
+
+  return res.status(200).json({
+    message: "Vehicle deleted successfully",
+    vehicleNumber: normalizedNumber,
+  });
+});
 
 module.exports = { deleteVehicleByNumber };

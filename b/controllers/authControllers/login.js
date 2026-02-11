@@ -2,70 +2,67 @@ const User = require("../../models/user");
 const bcrypt = require("bcrypt");
 const { setUser } = require("../../services/auth/jwt");
 
-async function login(req, res) {
-    try {
-        const { email, password } = req.body;
 
-        //  Check required fields
-        if (!email || !password) {
-            return res.status(400).send({ message: "Email and Password are required" });
-        }
+const { AppError, asyncHandler } = require("../../middlewares/errorHandler");
 
-        //  ADMIN LOGIN (No DB Check)
-        if (email === "admin@gmail.com") {
-            let token = setUser({
-                name: "Admin",
-                email,
-                role: "admin"
-            });
-            return res.status(200).send({
-                message: "Login successful",
-                token
-            });
-        }
+const login = asyncHandler(async (req, res, next) => {
+    const { email, password } = req.body;
 
-        // TESTER LOGIN (No DB Check)
-        if (email === "tester@gmail.com") {
-            let token = setUser({
-                name: "Tester",
-                email,
-                role: "tester"
-            });
-            return res.status(200).send({
-                message: "Login successful",
-                token
-            });
-        }
+    //  Check required fields
+    if (!email || !password) {
+        return next(new AppError("Email and Password are required", 400));
+    }
 
-        // Check normal user in DB
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).send({ message: "User not found" });
-        }
-
-        // Check password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).send({ message: "Invalid password" });
-        }
-
-        // Generate JWT
-        const token = setUser({
-            name: user.name,
-            email: user.email,
-            role: user.role
+    //  ADMIN LOGIN (No DB Check)
+    if (email === "admin@gmail.com") {
+        let token = setUser({
+            name: "Admin",
+            email,
+            role: "admin"
         });
-
-        // Send response
         return res.status(200).send({
             message: "Login successful",
             token
         });
-
-    } catch (err) {
-        console.error("Login Error:", err);
-        return res.status(500).send({ message: "Server error" });
     }
-}
+
+    // TESTER LOGIN (No DB Check)
+    if (email === "tester@gmail.com") {
+        let token = setUser({
+            name: "Tester",
+            email,
+            role: "tester"
+        });
+        return res.status(200).send({
+            message: "Login successful",
+            token
+        });
+    }
+
+    // Check normal user in DB
+    const user = await User.findOne({ email });
+    if (!user) {
+        return next(new AppError("User not found", 404));
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return next(new AppError("Invalid password", 401));
+    }
+
+    // Generate JWT
+    const token = setUser({
+        name: user.name,
+        email: user.email,
+        role: user.role
+    });
+
+    // Send response
+    return res.status(200).send({
+        message: "Login successful",
+        token
+    });
+});
 
 module.exports = { login };
