@@ -15,10 +15,10 @@ function generateOTP() {
 // Store OTP (Hashed) in Redis for 2 minutes
 async function storeOTP(email, otp) {
     const hashedOTP = await bcrypt.hash(otp, 10);
-    console.log(otp);
+    // Do not log OTP value for security
     await redisClient.set(`user:${email}`, hashedOTP, "EX", 120);
 
-    console.log(`🔐 OTP stored for ${email} (valid 2 minutes)`);
+    console.log(`🔐 OTP stored for ${email} (valid 2 minutes)`); // No OTP value logged
 }
 
 // Get OTP

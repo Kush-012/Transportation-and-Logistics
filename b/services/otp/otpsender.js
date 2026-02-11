@@ -15,7 +15,7 @@ async function otpSender(req, res) {
         });
 
     } catch (err) {
-        console.log("OTP Sender Error:", err);
+        console.error("OTP Sender Error"); // Do not log sensitive error details
         return res.status(500).send({ message: "Server error" });
     }
 }
