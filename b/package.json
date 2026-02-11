@@ -1,4 +1,24 @@
 {
+  "name": "bharatconnect-backend",
+  "version": "1.0.0",
+  "description": "BharatConnect - AI-powered logistics platform backend API",
+  "main": "index.js",
+  "type": "commonjs",
+  "author": "BharatConnect Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/Transportation-and-Logistics.git"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "@google/genai": "^1.33.0",
     "@google/generative-ai": "^0.24.1",
@@ -13,8 +33,10 @@
     "mongoose": "^9.0.0",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.11",
-    "nodemon": "^3.1.11",
     "otp-generator": "^4.0.1",
     "redis": "^5.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
