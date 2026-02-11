@@ -595,7 +595,7 @@ const TestimonialCard = ({ text, img, name, role, rating = 5, company }) => (
     {/* Testimonial text */}
     <p className="text-gray-200 text-sm sm:text-base italic leading-relaxed mb-6 sm:mb-8 relative z-10 group-hover:text-white transition-colors grow">"{text}"</p>
     
-    {/* User info */}
+    {/* User information */}
     <div className="flex items-center pt-4 border-t border-white/10">
       <div className="relative">
         <img
