@@ -2,10 +2,13 @@ const express = require("express");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config(); 
 
+
 const router = express.Router();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 const MODEL = "models/gemini-2.5-flash";
+const { aiRequestValidator } = require("../middlewares/validators");
+const { handleValidationErrors } = require("../middlewares/validationMiddleware");
 
 const SETU_GREETING = `
 Namaste! I am your <strong>SetuAI</strong> assistant!
@@ -55,66 +58,45 @@ If after answering, the user's problem may still be unresolved, always end your 
 You must ALWAYS respond as SetuAI.
 `;
 
-router.post("/ai", async (req, res) => {
-  try {
-    const { prompt } = req.body;
 
-    if (!prompt) {
-      return res.status(400).json({ reply: "Prompt is required." });
+router.post(
+  "/ai",
+  aiRequestValidator,
+  handleValidationErrors,
+  async (req, res) => {
+    try {
+      const { prompt } = req.body;
+      const model = ai.getGenerativeModel({ model: MODEL });
+      const result = await model.generateContent({
+        contents: [
+          { role: "model", parts: [{ text: SYSTEM_PROMPT }] },
+          { role: "user", parts: [{ text: prompt }] }
+        ],
+      });
+
+      let text = result?.response?.text() || "";
+      text = text
+        .replace(/(\S)\n\*/g, "$1\n\n*")
+        .replace(/\n\n\n+/g, "\n\n")
+        .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.*)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/(^|[^*\n])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>")
+        .replace(/(?:^|\n)\* (.*)/g, "<ul><li>$1</li></ul>")
+        .replace(/---/g, "<hr/>")
+        .replace(/\n/g, "<br/>");
+      return res.json({ reply: text });
+    } catch (error) {
+      console.error("AI Error →", error);
+      return res.json({
+        reply:
+          SETU_GREETING +
+          `⚠️ <strong>SetuAI is temporarily unavailable.</strong><br/>Please try again shortly.`
+      });
     }
-
-    const model = ai.getGenerativeModel({ model: MODEL });
-
-    const result = await model.generateContent({
-      contents: [
-        { role: "model", parts: [{ text: SYSTEM_PROMPT }] },
-        { role: "user", parts: [{ text: prompt }] }
-      ],
-    });
-
-    let text = result?.response?.text() || "";
-
-    text = text
-
-      .replace(/(\S)\n\*/g, "$1\n\n*")
-
-      // fix triple blank lines
-      .replace(/\n\n\n+/g, "\n\n")
-
-      // headings
-      .replace(/^### (.*)$/gm, "<h3>$1</h3>")
-      .replace(/^## (.*)$/gm, "<h2>$1</h2>")
-      .replace(/^# (.*)$/gm, "<h1>$1</h1>")
-
-      // bold italic
-      .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>")
-
-      // bold
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-
-      // italic (not bullets)
-      .replace(/(^|[^*\n])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>")
-
-      // bullet points
-      .replace(/(?:^|\n)\* (.*)/g, "<ul><li>$1</li></ul>")
-
-      // horizontal rule
-      .replace(/---/g, "<hr/>")
-
-      // newlines
-      .replace(/\n/g, "<br/>");
-
-    return res.json({ reply: text });
-
-  } catch (error) {
-    console.error("AI Error →", error);
-
-    return res.json({
-      reply:
-        SETU_GREETING +
-        `⚠️ <strong>SetuAI is temporarily unavailable.</strong><br/>Please try again shortly.`
-    });
   }
-});
+);
 
 module.exports = router;
