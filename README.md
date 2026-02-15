@@ -253,7 +253,7 @@ Step 1: Fork the repository
 Click the Fork button at the top right.
 
 Step 2: Clone your fork
-git clone https://github.com/your-username/Transportation-and-Logistics.git
+git clone https://github.com/Kush-012/Transportation-and-Logistics.git
 
 Step 3: Create a new branch
 git checkout -b feature/your-feature-name
