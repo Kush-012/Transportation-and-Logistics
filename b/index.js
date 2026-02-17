@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("./config/dbconfig");
+const { connectDB } = require("./config/dbconfig");
 
 const signupRoute = require("./routes/authRoutes/signup");
 const loginRoute = require("./routes/authRoutes/login");
@@ -62,6 +62,17 @@ app.use("/updatebooking", bookingsUpdateRoute);
 
 
 
-app.listen(4500, () => {
-  console.log("Server running on port 4500");
-});
+
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(4500, () => {
+      console.log("Server running on port 4500");
+    });
+  } catch (err) {
+    console.error("Failed to start server due to DB error.");
+    process.exit(1);
+  }
+}
+
+startServer();
