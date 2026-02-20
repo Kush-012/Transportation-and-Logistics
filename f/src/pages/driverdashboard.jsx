@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { jwtDecode } from "jwt-decode";
 import {
   MapPin,
@@ -32,14 +32,14 @@ export default function Driverdashboard() {
   // Fetch dashboard data
   const fetchDashboardData = async () => {
     try {
-      const bookingRes = await axios.get("http://localhost:4500/getbooking", {
+      const bookingRes = await api.get("/getbooking", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       setBookings(bookingRes.data);
 
-      const vehicleRes = await axios.get(
-        `http://localhost:4500/viewvehiclebydriverEmail/${email}`,
+      const vehicleRes = await api.get(
+        `/viewvehiclebydriverEmail/${email}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -58,8 +58,8 @@ export default function Driverdashboard() {
   // Update booking status
   const updateStatus = async (bookingid, status) => {
     try {
-      await axios.post(
-        `http://localhost:4500/updatebooking/${bookingid}`,
+      await api.post(
+        `/updatebooking/${bookingid}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

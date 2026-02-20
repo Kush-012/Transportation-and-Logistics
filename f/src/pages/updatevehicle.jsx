@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { jwtDecode } from "jwt-decode";
 
 export default function Updatevehicle() {
@@ -31,8 +31,8 @@ export default function Updatevehicle() {
     const decoded = jwtDecode(token);
     const driverEmail = decoded.email;
 
-    axios
-      .get(`http://localhost:4500/viewvehiclebydriverEmail/${driverEmail}`, {
+    api
+      .get(`/viewvehiclebydriverEmail/${driverEmail}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setVehicles(res.data.vehicles))
@@ -70,8 +70,8 @@ export default function Updatevehicle() {
       Object.keys(form).forEach((key) => formData.append(key, form[key]));
       if (imageFile) formData.append("image", imageFile);
 
-      await axios.put(
-        `http://localhost:4500/updatevehicle/${selectedVehicle.vehicleNumber}`,
+      await api.put(
+        `/updatevehicle/${selectedVehicle.vehicleNumber}`,
         formData,
         {
           headers: {
@@ -95,8 +95,8 @@ export default function Updatevehicle() {
     try {
       const token = sessionStorage.getItem("token");
 
-      await axios.delete(
-        `http://localhost:4500/deletevehicle/${vehicleNumber}`,
+      await api.delete(
+        `/deletevehicle/${vehicleNumber}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

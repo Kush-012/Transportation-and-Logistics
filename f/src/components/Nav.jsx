@@ -15,7 +15,7 @@ import {
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 
 export default function Addvehicle() {
   const [form, setForm] = useState({
@@ -40,7 +40,7 @@ export default function Addvehicle() {
     images.forEach((img) => formData.append("images", img));
 
     try {
-      await axios.post("http://localhost:4500/addvehicle", formData, {
+      await api.post("/addvehicle", formData, {
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
           "Content-Type": "multipart/form-data",

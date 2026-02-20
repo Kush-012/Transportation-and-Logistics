@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4500/login", form);
+      const res = await api.post("/login", form);
 
       login(res.data.token);
 

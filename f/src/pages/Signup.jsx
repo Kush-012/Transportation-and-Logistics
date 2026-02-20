@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Signup() {
@@ -37,7 +37,7 @@ export default function Signup() {
     setMessage("");
 
     try {
-      await axios.post("http://localhost:4500/signup", {
+      await api.post("/signup", {
         name: form.name,
         email: form.email,
         password: form.password,
@@ -56,7 +56,7 @@ export default function Signup() {
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:4500/signup", form);
+      const res = await api.post("/signup", form);
       sessionStorage.setItem("token", res.data.token);
       setMessage("Signup Successful! Redirecting...");
       setTimeout(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 
 export default function Shipperdashboard() {
   const [bookings, setBookings] = useState([]);
@@ -20,8 +20,8 @@ export default function Shipperdashboard() {
   useEffect(() => {
     if (!user) return;
 
-    axios
-      .get("http://localhost:4500/getbooking", {
+    api
+      .get("/getbooking", {
         headers: { Authorization: "Bearer " + sessionStorage.getItem("token") },
       })
       .then((res) => setBookings(res.data))

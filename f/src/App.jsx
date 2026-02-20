@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./components/AuthContext";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
 
-import Home from "./components/Home";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 import Nav from "./components/Nav";
-import Viewvehicle from "./components/viewvehicle";
-import Addvehicle from "./components/addvehicle";
-import Book from "./components/book";
-import Checkout from "./components/checkout";
-import Updatevehicle from "./components/updatevehicle";
-import Driverdashboard from "./components/driverdashboard";
-import Shipperdashboard from "./components/shipperdashboard";
+import Viewvehicle from "./pages/viewvehicle";
+import Addvehicle from "./pages/addvehicle";
+import Book from "./pages/book";
+import Checkout from "./pages/checkout";
+import Updatevehicle from "./pages/updatevehicle";
+import Driverdashboard from "./pages/driverdashboard";
+import Shipperdashboard from "./pages/shipperdashboard";
 import AI from "./components/ai";
-import Resetpassword from "./components/resetpassword";
+import Resetpassword from "./pages/resetpassword";
 
 function AppRoutes() {
   const { userData, loading } = useAuth();

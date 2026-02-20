@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 
 export default function Viewvehicle() {
   const [vehicles, setVehicles] = useState([]);
@@ -12,7 +12,7 @@ export default function Viewvehicle() {
 
   async function fetchVehicles() {
     try {
-      const res = await axios.get("http://localhost:4500/viewvehicle", {
+      const res = await api.get("/viewvehicle", {
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
