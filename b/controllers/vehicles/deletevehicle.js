@@ -1,4 +1,8 @@
 const Vehicle = require("../../models/vehicle");
+const {
+  normalizeVehicleNumber,
+  isValidIndianVehicleNumber,
+} = require("../../utils/vehicleNumberValidation");
 
 
 async function deleteVehicleByNumber(req, res) {
@@ -11,7 +15,13 @@ async function deleteVehicleByNumber(req, res) {
     }
 
     
-    const normalizedNumber = vehicleNumber.toUpperCase();
+    const normalizedNumber = normalizeVehicleNumber(vehicleNumber);
+
+    if (!isValidIndianVehicleNumber(normalizedNumber)) {
+      return res.status(400).json({
+        message: "Invalid vehicle registration number format. Expected format like MH12AB1234",
+      });
+    }
 
     const deletedVehicle = await Vehicle.findOneAndDelete({
       vehicleNumber: normalizedNumber,
