@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 
 export default function Resetpassword() {
@@ -25,7 +25,7 @@ export default function Resetpassword() {
     if (!email) return notify("Email is required", "error");
 
     try {
-      await axios.post("http://localhost:4500/resetpassword", { email });
+      await api.post("/resetpassword", { email });
       notify("OTP sent to your email", "success");
       setStep(2);
     } catch (err) {
@@ -44,7 +44,7 @@ export default function Resetpassword() {
       return notify("Passwords do not match", "error");
 
     try {
-      await axios.post("http://localhost:4500/resetpassword", {
+      await api.post("/resetpassword", {
         email,
         otp,
         newPassword,

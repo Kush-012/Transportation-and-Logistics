@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../services/apiClient";
 import {
   FaMapMarkerAlt,
   FaTruckLoading,
@@ -56,7 +56,7 @@ export default function Book() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("http://localhost:4500/viewvehicle", {
+        const res = await api.get("/viewvehicle", {
           headers: { Authorization: "Bearer " + sessionStorage.getItem("token") },
         });
 
@@ -251,8 +251,8 @@ export default function Book() {
       return notify("Vehicle is not available for booking!", "error");
 
     try {
-      await axios.post(
-        "http://localhost:4500/createbooking",
+      await api.post(
+        "/createbooking",
         {
           shipperEmail: user.email,
           driverEmail: selected.driverEmail,

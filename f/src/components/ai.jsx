@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 
 export default function AI() {
   const [open, setOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function AI() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:4500/api/ai", {
+      const res = await api.post("/api/ai", {
         prompt: userText
       });
 
