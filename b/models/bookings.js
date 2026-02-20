@@ -43,11 +43,13 @@ const bookingSchema = new mongoose.Schema(
     distanceInKm: {
       type: Number,
       required: true,
+      min: [0.1, "Distance must be greater than 0"],
     },
 
     totalFare: {
       type: Number,
       required: true,
+      min: [0, "Fare cannot be negative"],
     },
 
     status: {
