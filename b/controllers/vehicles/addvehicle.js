@@ -1,6 +1,10 @@
 const Vehicle = require("../../models/vehicle");
 const cloudinary = require("../../config/cloudinaryconfig");
 const stream = require("stream"); 
+const {
+  normalizeVehicleNumber,
+  isValidIndianVehicleNumber,
+} = require("../../utils/vehicleNumberValidation");
 
 async function addvehicle(req, res) {
   try {
@@ -19,6 +23,14 @@ async function addvehicle(req, res) {
     if (!vehicleType || !vehicleNumber || !capacityInKg || !pricePerKm || !location) {
       return res.status(400).json({ message: "All fields are required!" });
     } 
+
+    const normalizedVehicleNumber = normalizeVehicleNumber(vehicleNumber);
+
+    if (!isValidIndianVehicleNumber(normalizedVehicleNumber)) {
+      return res.status(400).json({
+        message: "Invalid vehicle registration number format. Expected format like MH12AB1234",
+      });
+    }
 
     // Upload images to Cloudinary (Memory Buffer)
     let imageUrls = [];
@@ -49,7 +61,7 @@ async function addvehicle(req, res) {
       driverEmail,
       location,
       vehicleType,
-      vehicleNumber,
+      vehicleNumber: normalizedVehicleNumber,
       capacityInKg,
       pricePerKm,
       isAvailable: true,

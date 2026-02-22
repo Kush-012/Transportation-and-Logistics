@@ -1,5 +1,9 @@
 
 const Vehicle = require("../../models/vehicle");
+const {
+  normalizeVehicleNumber,
+  isValidIndianVehicleNumber,
+} = require("../../utils/vehicleNumberValidation");
 
 
 async function updateVehicleByNumber(req, res) {
@@ -12,7 +16,13 @@ async function updateVehicleByNumber(req, res) {
     }
 
   
-    const normalizedNumber = vehicleNumber.trim().toUpperCase();
+    const normalizedNumber = normalizeVehicleNumber(vehicleNumber);
+
+    if (!isValidIndianVehicleNumber(normalizedNumber)) {
+      return res.status(400).json({
+        message: "Invalid vehicle registration number format. Expected format like MH12AB1234",
+      });
+    }
 
     
     const { location, vehicleType, capacityInKg, pricePerKm, isAvailable } = req.body;
