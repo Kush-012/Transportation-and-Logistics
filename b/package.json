@@ -1,4 +1,12 @@
 {
+  "name": "bharatconnect-backend",
+  "version": "1.0.0",
+  "description": "Backend API for BharatConnect Transportation & Logistics Platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "@google/genai": "^1.33.0",
     "@google/generative-ai": "^0.24.1",
