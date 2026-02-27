@@ -24,13 +24,35 @@ BharatConnect connects Shippers and Drivers on a unified digital platform to sim
 - ### Contact
 
 ---
+
+## Images of Project 
+
+### Main Page : 
+
 <img width="1888" height="858" alt="image" src="https://github.com/user-attachments/assets/f2850a6d-c52d-449d-a900-fada3c6900a2" />
+
+### Book Transport Page :
+
 <img width="1893" height="866" alt="image" src="https://github.com/user-attachments/assets/dbd3b4e8-2fc3-4bec-9d59-23618ce5bed9" />
+
+### Vehicles Page
+
 <img width="1906" height="854" alt="image" src="https://github.com/user-attachments/assets/63501248-0cdb-40df-9dbb-51399a867b9a" />
+
+### My Bookings Page 
+
 <img width="1882" height="863" alt="image" src="https://github.com/user-attachments/assets/fa0e99bd-a937-4432-a519-1ad5ec2b3670" />
+
+### Driver's login and Signup Page
+
 <img width="1906" height="867" alt="image" src="https://github.com/user-attachments/assets/2992db3d-d16c-4d35-b1f6-ed699a0740fe" />
-## Driver Dashboard:
+
+### Driver's Vehicle Update Page
+
 <img width="1901" height="860" alt="image" src="https://github.com/user-attachments/assets/152abf78-1611-48a7-9a7f-4844f93b8055" />
+
+### Driver's Dashboard
+
 <img width="1897" height="865" alt="image" src="https://github.com/user-attachments/assets/684540a5-bc6e-4b61-bb4e-3bd49fe18cda" />
 
 
@@ -55,59 +77,54 @@ Cloud-based media storage
 
 ## Features
 
-Secure authentication with JWT & OTP
-
-Role-based access (Shipper & Driver)
-
-Vehicle management (Add, Update, View)
-
-Transport booking & order lifecycle
-
-Live route mapping & distance calculation
-
-Dynamic fare calculation
-
-SetuAI – AI assistant for logistics & support
-
-Booking status management (Pending, Paid, Accepted, Ongoing, Completed)
-
-Built for Indian logistics & transport use-cases
+- Secure authentication with JWT & OTP
+- Role-based access (Shipper & Driver)
+- Vehicle management (Add, Update, View)
+- Transport booking & order lifecycle
+- Live route mapping & distance calculation
+- Dynamic fare calculation
+- SetuAI – AI assistant for logistics & support
+- Booking status management (Pending, Paid, Accepted, Ongoing, Completed)
+- Built for Indian logistics & transport use-cases
 
 ---
 
 ## Tech Stack
-- Frontend: React.js, Tailwind CSS
-- Backend: Node.js, Express.js
-- Database: MongoDB (MongoDB Atlas)
-- Caching & OTP Storage: Redis
-- Authentication: JWT, OTP-based verification
-- Media Storage: Cloudinary (vehicle images)
-- Maps & Routing: OpenStreetMap, OSRM
-- AI Integration: Gemini API (SetuAI Assistant)
-- Email Service: Nodemailer (Gmail SMTP)
-- Runtime: Node.js
-- Package Manager: npm
+
+| Layer / Component       | Technology | Purpose / Description |
+|------------------------|------------|---------------------|
+| Frontend               | React.js, Tailwind CSS | User interface for Shippers & Drivers |
+| Backend                | Node.js, Express.js    | Server-side logic and API endpoints |
+| Database               | MongoDB (MongoDB Atlas) | Data storage for users, vehicles, bookings |
+| Caching & OTP Storage  | Redis                  | Caching & temporary OTP storage for authentication |
+| Authentication         | JWT, OTP-based verification | Secure login and verification |
+| Media Storage          | Cloudinary             | Vehicle image storage in the cloud |
+| Maps & Routing         | OpenStreetMap, OSRM    | Route mapping, distance calculation |
+| AI Integration         | Gemini API (SetuAI Assistant) | AI assistant for logistics & support |
+| Email Service          | Nodemailer (Gmail SMTP) | Send OTPs, notifications via email |
+| Runtime                | Node.js                | Backend server runtime |
+| Package Manager        | npm                    | Dependency management |
 
 
 ## Folder Structure
 ```
 /Transportation-and-Logistics
-│── /f
-│   ├── /components
-│   ├── /pages
-│   └── App.jsx
+│── /f                  -    Frontend
+│   ├── /components     -    React Components 
+│   ├── /pages          -    Page-level components
+│   └── App.jsx         -    Main app entry
 │
-│── /b
-│   ├── /controllers
-│   ├── /routes
-│   ├── /models
-│   ├── /middlewares
-│   ├── /services
-│   ├── index.js
+│── /b                  -    Backend
+│   ├── /controllers    -    Request handlers
+│   ├── /routes         -    API endpoints 
+│   ├── /models         -    Database Schemas
+│   ├── /middlewares    -    Middleware functions
+│   ├── /services       -    Helper services
+│   ├── index.js        -    Backend entry
 │
-│── .env
-│── package.json
-└── README.md
+│── .env                -    Environment Variables
+│── package.json        -    Project dependencies
+└── README.md           -    Project documentation
 ```
 ---
 
@@ -273,13 +290,10 @@ Open a Pull Request describing your changes clearly.
 ---
 ## Contribution Guidelines
 
-Follow consistent code formatting
-
-Use meaningful commit messages
-
-Do not push directly to main
-
-Test your changes before submitting
+- Follow consistent code formatting
+- Use meaningful commit messages
+- Do not push directly to main
+- Test your changes before submitting
 
 ---
 
