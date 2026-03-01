@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/apiClient";
 import { MapPin, ArrowRight, Truck, IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -39,7 +39,7 @@ const navigate = useNavigate();
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:4500/getbooking", {
+      const res = await api.get("/getbooking", {
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
@@ -63,8 +63,8 @@ const navigate = useNavigate();
   
   const handlePayment = async (bookingid) => {
     try {
-      await axios.post(
-        `http://localhost:4500/updatebooking/${bookingid}`,
+      await api.post(
+        `/updatebooking/${bookingid}`,
         { status: "Paid" },
         {
           headers: {
@@ -94,8 +94,8 @@ const navigate = useNavigate();
  
   const handleCancel = async (bookingid) => {
     try {
-      await axios.post(
-        `http://localhost:4500/updatebooking/${bookingid}`,
+      await api.post(
+        `/updatebooking/${bookingid}`,
         { status: "Cancelled" },
         {
           headers: {
