@@ -13,7 +13,8 @@ import Updatevehicle from "./pages/updatevehicle";
 import Driverdashboard from "./pages/driverdashboard";
 import Shipperdashboard from "./pages/shipperdashboard";
 import AI from "./components/ai";
-import Resetpassword from "./pages/resetpassword";
+import Resetpassword from "./components/resetpassword";
+import ScrollToTopButton from "./components/scrollToTop";
 
 function AppRoutes() {
   const { userData, loading } = useAuth();
@@ -38,6 +39,7 @@ function AppRoutes() {
 
   return (
     <>
+      <ScrollToTopButton/>
       <Nav />
       <AI />
 
