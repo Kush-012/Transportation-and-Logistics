@@ -32,7 +32,7 @@ async function sendmail(receiverEmail) {
         });
 
         console.log(`Email OTP sent to ${receiverEmail}`);
-        console.log(`Generated OTP: ${otp}`);
+        // Do not log generated OTP for security
 
     } catch (err) {
         console.error("Error sending email:", err);
