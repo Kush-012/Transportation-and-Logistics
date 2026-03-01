@@ -19,6 +19,8 @@ const bookingsCreateRoute = require("./routes/bookings/createbooking");
 const bookingsGetRoute = require("./routes/bookings/getbooking");
 const bookingsUpdateRoute = require("./routes/bookings/updatebooking");
 
+const healthCheckRoute = require("./routes/healthCheck/healthCheck");
+
 
 
 
@@ -62,6 +64,9 @@ app.use("/bookings", bookingsUpdateRoute);
 app.use("/createbooking", bookingsCreateRoute);
 app.use("/getbooking", bookingsGetRoute);
 app.use("/updatebooking", bookingsUpdateRoute);
+
+// health check routes
+app.use("/health", healthCheckRoute);
 
 
 
