@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { setUser } = require("../../services/auth/jwt");
 const { sendmail } = require("../../services/mail/sendmail");
 const { verifyOTP } = require("../../services/otp/otpverifier");
+const { validatePassword } = require("../../utils/passwordValidation");
 
 async function signup(req, res) {
     try {
@@ -28,8 +29,7 @@ async function signup(req, res) {
             }
 
             // Password Validation
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+]).{8,}$/;
-            if (!passwordRegex.test(password)) {
+            if (!validatePassword(password)) {
                 return res.status(400).send({
                     message: "Password must be at least 8 characters long and include one letter, one number, and one special character."
                 });

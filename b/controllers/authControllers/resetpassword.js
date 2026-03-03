@@ -2,6 +2,7 @@ const User = require("../../models/user");
 const bcrypt = require("bcrypt");
 const { sendmail } = require("../../services/mail/sendmail");
 const { verifyOTP } = require("../../services/otp/otpverifier");
+const { validatePassword } = require("../../utils/passwordValidation");
 
 // STEP 1 → SEND OTP
 // STEP 2 → VERIFY OTP + RESET PASSWORD
@@ -39,10 +40,7 @@ async function resetPassword(req, res) {
       return res.status(400).send({ message: "New password is required" });
     }
 
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+]).{8,}$/;
-
-    if (!passwordRegex.test(newPassword)) {
+    if (!validatePassword(newPassword)) {
       return res.status(400).send({
         message:
           "Password must be 8+ chars including letter, number, and special character."

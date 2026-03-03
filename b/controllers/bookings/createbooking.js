@@ -12,17 +12,7 @@ async function createbooking(req, res) {
       totalFare
     } = req.body;
 
-    if (
-      !shipperEmail ||
-      !driverEmail ||
-      !vehicleNo ||
-      !pickupLocation ||
-      !dropLocation ||
-      !distanceInKm ||
-      !totalFare
-    ) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    // Validation is handled by middleware
 
     const booking = await Booking.create({
       shipperEmail,
