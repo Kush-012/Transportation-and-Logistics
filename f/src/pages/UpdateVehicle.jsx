@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../services/apiClient";
 import { jwtDecode } from "jwt-decode";
 
-export default function Updatevehicle() {
+export default function UpdateVehicle() {
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [imageFile, setImageFile] = useState(null);

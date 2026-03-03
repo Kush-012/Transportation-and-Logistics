@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import api from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 
-export default function Resetpassword() {
+export default function ResetPassword() {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1); 
