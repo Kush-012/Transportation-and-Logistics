@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/apiClient";
 
-export default function Shipperdashboard() {
+export default function ShipperDashboard() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 

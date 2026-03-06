@@ -13,7 +13,7 @@ import {
   Activity,
 } from "lucide-react";
 
-export default function Driverdashboard() {
+export default function DriverDashboard() {
   const [bookings, setBookings] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
