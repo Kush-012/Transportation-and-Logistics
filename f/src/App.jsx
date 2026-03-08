@@ -5,16 +5,16 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Nav from "./components/Nav";
-import Viewvehicle from "./pages/viewvehicle";
-import Addvehicle from "./pages/addvehicle";
-import Book from "./pages/book";
-import Checkout from "./pages/checkout";
-import Updatevehicle from "./pages/updatevehicle";
-import Driverdashboard from "./pages/driverdashboard";
-import Shipperdashboard from "./pages/shipperdashboard";
-import AI from "./components/ai";
-import Resetpassword from "./components/resetpassword";
-import ScrollToTopButton from "./components/scrollToTop";
+import ViewVehicle from "./pages/ViewVehicle";
+import AddVehicle from "./pages/AddVehicle";
+import Book from "./pages/Book";
+import Checkout from "./pages/Checkout";
+import UpdateVehicle from "./pages/UpdateVehicle";
+import DriverDashboard from "./pages/DriverDashboard";
+import ShipperDashboard from "./pages/ShipperDashboard";
+import AI from "./components/AI";
+import ResetPassword from "./pages/ResetPassword";
+import ScrollToTopButton from "./components/ScrollToTop";
 
 function AppRoutes() {
   const { userData, loading } = useAuth();
@@ -48,16 +48,16 @@ function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/resetpassword" element={<Resetpassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
 
-          <Route path="/viewvehicle" element={ShipperRoute(<Viewvehicle />)} />
+          <Route path="/viewvehicle" element={ShipperRoute(<ViewVehicle />)} />
           <Route path="/bookvehicle" element={ShipperRoute(<Book />)} />
           <Route path="/checkout" element={ShipperRoute(<Checkout />)} />
-          <Route path="/shipperdashboard" element={ShipperRoute(<Shipperdashboard />)} />
+          <Route path="/shipperdashboard" element={ShipperRoute(<ShipperDashboard />)} />
 
-          <Route path="/addvehicle" element={DriverRoute(<Addvehicle />)} />
-          <Route path="/updatevehicle" element={DriverRoute(<Updatevehicle />)} />
-          <Route path="/driverdashboard" element={DriverRoute(<Driverdashboard />)} />
+          <Route path="/addvehicle" element={DriverRoute(<AddVehicle />)} />
+          <Route path="/updatevehicle" element={DriverRoute(<UpdateVehicle />)} />
+          <Route path="/driverdashboard" element={DriverRoute(<DriverDashboard />)} />
         </Routes>
       </div>
     </>

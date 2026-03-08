@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../services/apiClient";
 
-export default function Addvehicle() {
+export default function AddVehicle() {
   const [form, setForm] = useState({
     vehicleType: "",
     vehicleNumber: "",

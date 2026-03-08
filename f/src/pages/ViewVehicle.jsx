@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/apiClient";
 
-export default function Viewvehicle() {
+export default function ViewVehicle() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
