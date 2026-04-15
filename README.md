@@ -298,3 +298,7 @@ GitHub: https://github.com/Kush-012
 LinkedIn: https://www.linkedin.com/in/kushm1
 
 Email: kushmehta124@gmail.com
+
+## Contribution Tips
+
+Feel free to contribute by improving documentation or fixing minor issues.
