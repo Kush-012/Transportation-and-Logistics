@@ -78,11 +78,11 @@ Drivers to manage vehicles, bookings, and trips efficiently
 The platform includes SetuAI, an AI-powered assistant that provides logistics-related help, booking guidance, and route assistance.
 
 The system follows a secure, scalable, role-based architecture using:
-
 JWT authentication
 OTP verification
 Redis caching
 Cloud-based media storage
+
 ---
 
 ## Features
